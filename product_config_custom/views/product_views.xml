@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_attribute_value_tree_inherit_product_config_custom" model="ir.ui.view">
+        <field name="name">product.template.attribute.value.view.tree.inherit.product_config_custom</field>
+        <field name="model">product.template.attribute.value</field>
+        <field name="inherit_id" ref="product.product_template_attribute_value_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_extra']" position="after">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_template_attribute_value_form_inherit_product_config_custom" model="ir.ui.view">
+        <field name="name">product.template.attribute.value.view.form.inherit.product_config_custom</field>
+        <field name="model">product.template.attribute.value</field>
+        <field name="inherit_id" ref="product.product_template_attribute_value_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price_extra']" position="after">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
