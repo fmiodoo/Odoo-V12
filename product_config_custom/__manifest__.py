@@ -15,6 +15,9 @@ Customized Product Configurator
     """,
     # data files always loaded at installation
     'data': [
+        # Security files
+        'security/ir.model.access.csv',
+        # Views
         'views/product_views.xml',
     ],
 }
