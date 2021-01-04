@@ -40,5 +40,5 @@ class ProductProduct(models.Model):
         for product in self:
             formatted_length = str(product.desired_length).zfill(5) + "M"
             product.name = product.product_tmpl_id.name + "-" + formatted_length
-            product.x_studio_catalog_ = product.product_tmpl_id.x_studio_catalog_ + "-" + formatted_length
-
+            if product.x_studio_catalog_:
+                product.x_studio_catalog_ = product.product_tmpl_id.x_studio_catalog_ + "-" + formatted_length
