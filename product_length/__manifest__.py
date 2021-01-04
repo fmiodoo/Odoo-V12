@@ -28,7 +28,7 @@
     # always loaded
     'data': [
         'views/product_template_views_inherit.xml',
-        'wizard/product_length_wizard_view.xml',
+        'views/sale_order_views_inherit.xml',
     ],
 
     'license': 'OEEL-1'

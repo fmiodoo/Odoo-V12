@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from odoo import fields, models, api, _
-
+from odoo.exceptions import ValidationError
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
+
+    desired_length = fields.Float(string="Length",
+                                  related="product_id.desired_length",
+                                  readonly=False)
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'product_id.per_meter_adder', 'product_id.desired_length')
     def _compute_amount(self):

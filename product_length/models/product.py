@@ -25,6 +25,8 @@ class ProductProduct(models.Model):
                                   default=1.0)
     name = fields.Char(string="Name",
                        compute="_compute_product_name")
+    x_studio_catalog_ = fields.Char(string="Catalog #",
+                                    compute="_compute_product_name")
 
     @api.one
     @api.constrains("desired_length")
@@ -38,5 +40,5 @@ class ProductProduct(models.Model):
         for product in self:
             formatted_length = str(product.desired_length).zfill(5) + "M"
             product.name = product.product_tmpl_id.name + "-" + formatted_length
+            product.x_studio_catalog_ = product.product_tmpl_id.x_studio_catalog_ + "-" + formatted_length
 
-    # TODO: Add function to compute Catalog # so that it contains the length string appended to the end
