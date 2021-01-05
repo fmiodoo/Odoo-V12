@@ -21,7 +21,7 @@ class SaleOrderLine(models.Model):
             else:
                 line.name = line.product_id.get_product_multiline_description_sale()
 
-    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'product_id.per_meter_adder', 'product_id.desired_length')
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'product_id.length_multiplier', 'product_id.desired_length')
     def _compute_amount(self):
         """
         Compute the amounts of the SO line.
@@ -30,4 +30,4 @@ class SaleOrderLine(models.Model):
 
         for line in self:
             extra_length = line.product_id.desired_length - 1.0
-            line.price_subtotal += extra_length * line.product_id.per_meter_adder
+            line.price_subtotal += extra_length * line.product_id.length_multiplier

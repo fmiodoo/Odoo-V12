@@ -7,16 +7,16 @@ from odoo.exceptions import ValidationError
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    per_meter_adder = fields.Float(string="Per Meter Adder",
+    length_multiplier = fields.Float(string="Length Cost Multiplier",
                                    default=1.0,
-                                   help="Price per meter above the 1m assembled price.")
+                                   help="Price per each unit above the single unit assembled price.")
     is_cable_product = fields.Boolean(string="Is a Cable Product")
 
     @api.one
-    @api.constrains("per_meter_adder")
-    def _check_per_meter_adder(self):
-        if self.per_meter_adder <= 0.0:
-            raise ValidationError("Field Per Meter Adder must be a positive value.")
+    @api.constrains("length_multiplier")
+    def _check_length_multiplier(self):
+        if self.length_multiplier <= 0.0:
+            raise ValidationError("Field Length Cost Multiplier must be a positive value.")
 
 
 class ProductProduct(models.Model):
