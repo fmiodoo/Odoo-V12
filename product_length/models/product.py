@@ -10,12 +10,13 @@ class ProductTemplate(models.Model):
     per_meter_adder = fields.Float(string="Per Meter Adder",
                                    default=1.0,
                                    help="Price per meter above the 1m assembled price.")
+    is_cable_product = fields.Boolean(string="Is a Cable Product")
 
     @api.one
     @api.constrains("per_meter_adder")
     def _check_per_meter_adder(self):
         if self.per_meter_adder <= 0.0:
-            raise ValidationError("Field Per Meter Adder must contain a positive value.")
+            raise ValidationError("Field Per Meter Adder must be a positive value.")
 
 
 class ProductProduct(models.Model):
@@ -31,14 +32,19 @@ class ProductProduct(models.Model):
     @api.one
     @api.constrains("desired_length")
     def _check_desired_length(self):
-        # TODO: Confirm that minimum length is 1M
-        if self.desired_length < 1.0:
-            raise ValidationError("Field Desired Length must be at least 1.0M.")
+        if self.desired_length <= 0.0:
+            raise ValidationError("Field Desired Length must be a positive value.")
 
     @api.depends("desired_length", "product_tmpl_id")
     def _compute_product_name(self):
         for product in self:
-            formatted_length = str(product.desired_length).zfill(5) + "M"
-            product.name = product.product_tmpl_id.name + "-" + formatted_length
-            if product.x_studio_catalog_:
-                product.x_studio_catalog_ = product.product_tmpl_id.x_studio_catalog_ + "-" + formatted_length
+            if product.is_cable_product:
+                formatted_length = "%07.1f" % product.desired_length + product.uom_id.name
+                product.name = product.product_tmpl_id.name + "-" + formatted_length
+
+                if product.x_studio_catalog_:
+                    product.x_studio_catalog_ = product.product_tmpl_id.x_studio_catalog_ + "-" + formatted_length
+            else:
+                product.name = product.product_tmpl_id.name
+                if product.x_studio_catalog_:
+                    product.x_studio_catalog_ = product.product_tmpl_id.x_studio_catalog_
