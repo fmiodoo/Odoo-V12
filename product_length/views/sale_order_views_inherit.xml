@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook/page[1]//tree/field[@name='product_uom_qty']" position="after">
-                <field name="desired_length"/>
+                <field name="length"/>
             </xpath>
         </field>
     </record>
