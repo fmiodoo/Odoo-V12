@@ -38,8 +38,16 @@ class SaleOrderLine(models.Model):
 
         for line in self:
             if line.product_id.is_cable_product:
+                new_price = 0
                 if line.length < 1.0:
-                    line.price_subtotal *= line.length
+                    new_price = line.product_id.list_price * line.length
                 elif line.length > 1.0:
                     extra_length = line.length - 1.0
-                    line.price_subtotal += extra_length * line.product_id.length_multiplier
+                    new_price = (extra_length * line.product_id.length_multiplier) + line.product_id.list_price
+
+                taxes = line.tax_id.compute_all(new_price, line.order_id.currency_id, line.product_uom_qty, product=line.product_id, partner=line.order_id.partner_shipping_id)
+                line.update({
+                    'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                    'price_total': taxes['total_included'],
+                    'price_subtotal': taxes['total_excluded'],
+                })
