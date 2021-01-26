@@ -40,11 +40,13 @@ class SaleOrderLine(models.Model):
             if line.product_id.is_cable_product:
                 new_price = 0
                 if line.length < 1.0:
-                    new_price = line.product_id.list_price * line.length * (1 - (line.discount or 0.0) / 100)
+                    new_price = line.price_unit * line.length * (1 - (line.discount or 0.0) / 100)
                 elif line.length > 1.0:
                     extra_length = line.length - 1.0
-                    new_price = (extra_length * line.product_id.length_multiplier) + line.product_id.list_price
+                    new_price = (extra_length * line.product_id.length_multiplier) + line.price_unit
                     new_price *= (1 - (line.discount or 0.0) / 100)
+                else:
+                    new_price = line.price_unit * (1 - (line.discount or 0.0) / 100)
 
                 taxes = line.tax_id.compute_all(new_price, line.order_id.currency_id, line.product_uom_qty,
                                                 product=line.product_id, partner=line.order_id.partner_shipping_id)
