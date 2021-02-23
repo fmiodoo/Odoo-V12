@@ -16,8 +16,9 @@ class SaleOrderLine(models.Model):
 
     @api.constrains("length")
     def _check_length(self):
-        if self.length <= 0.0:
-            raise ValidationError("Field Length must be a positive value.")
+        for line in self:
+            if line.length <= 0.0:
+                raise ValidationError("Field Length must be a positive value.")
 
     @api.depends('length')
     def _compute_name(self):
