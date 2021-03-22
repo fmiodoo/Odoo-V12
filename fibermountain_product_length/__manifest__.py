@@ -29,6 +29,7 @@
     'data': [
         'views/product_template_views_inherit.xml',
         'views/sale_order_views_inherit.xml',
+        'report/sale_report_templates.xml',
     ],
 
     'license': 'OEEL-1'
