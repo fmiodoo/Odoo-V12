@@ -16,15 +16,16 @@ class SaleOrderLine(models.Model):
 
     @api.constrains("length")
     def _check_length(self):
-        if self.length <= 0.0:
-            raise ValidationError("Field Length must be a positive value.")
+        for line in self:
+            if line.length <= 0.0:
+                raise ValidationError("Field Length must be a positive value.")
 
     @api.depends('length')
     def _compute_name(self):
         for line in self:
             if line.product_id.is_cable_product:
                 formatted_length = "%07.2f" % line.length + line.product_id.uom_id.name
-                line.name = line.product_id.name + "-" + formatted_length
+                line.name = line.product_id.x_studio_catalog_ + "-" + formatted_length
             else:
                 line.name = line.product_id.get_product_multiline_description_sale()
 
