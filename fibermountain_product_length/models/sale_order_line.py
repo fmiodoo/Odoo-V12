@@ -11,8 +11,8 @@ class SaleOrderLine(models.Model):
                           default=1.0,
                           readonly=False)
 
-    name = fields.Text(string="Description",
-                       compute="_compute_name")
+    cable_catalog_number = fields.Char(string="Cable Catalog #",
+                                       compute="_compute_cable_catalog_number")
 
     @api.constrains("length")
     def _check_length(self):
@@ -20,14 +20,14 @@ class SaleOrderLine(models.Model):
             if line.length <= 0.0:
                 raise ValidationError("Field Length must be a positive value.")
 
-    @api.depends('length')
-    def _compute_name(self):
+    @api.depends("length")
+    def _compute_cable_catalog_number(self):
         for line in self:
             if line.product_id.is_cable_product:
-                formatted_length = "%07.2f" % line.length + line.product_id.uom_id.name
-                line.name = line.product_id.x_studio_catalog_ + "-" + formatted_length
+                formatted_length = "%07.2f" % line.length + "M"
+                line.cable_catalog_number = line.product_id.x_studio_catalog_ + "-" + formatted_length
             else:
-                line.name = line.product_id.get_product_multiline_description_sale()
+                line.cable_catalog_number = ""
 
     @api.depends("product_uom_qty", "discount", "price_unit", "tax_id", "product_id.length_multiplier", "length")
     def _compute_amount(self):
