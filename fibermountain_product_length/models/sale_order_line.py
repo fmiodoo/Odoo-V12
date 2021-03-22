@@ -25,7 +25,7 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line.product_id.is_cable_product:
                 formatted_length = "%07.2f" % line.length + "M"
-                line.cable_catalog_number = line.product_id.x_studio_catalog_ + "-" + formatted_length
+                line.cable_catalog_number = (line.product_id.x_studio_catalog_ or "") + "-" + formatted_length
             else:
                 line.cable_catalog_number = ""
 
