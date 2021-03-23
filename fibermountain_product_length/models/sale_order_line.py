@@ -14,6 +14,8 @@ class SaleOrderLine(models.Model):
     cable_catalog_number = fields.Char(string="Cable Catalog #",
                                        compute="_compute_cable_catalog_number")
 
+    name = fields.Text(string='Description', required=True, default="")
+
     @api.constrains("length")
     def _check_length(self):
         for line in self:
