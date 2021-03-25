@@ -6,6 +6,7 @@
         Calculates the price of the product variant based on the entered length.""",
 
     'description': """
+        Task ID: 2368045 jsz
         Product Configurator to price based on a set of inputs.
 
         Fiber Mountain sells custom length cables, and depending on different attributes, and the length, Odoo should 
