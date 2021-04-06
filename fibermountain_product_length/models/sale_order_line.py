@@ -43,18 +43,16 @@ class SaleOrderLine(models.Model):
             new_unit_price = line.product_id.list_price
 
             if line.length < 1.0:
-                # Only round first calculation or double rounding will occur
-                new_unit_price = float_round(new_unit_price * line.length, 2)
-                new_price = new_unit_price * (1 - (line.discount or 0.0) / 100)
+                new_unit_price = float_round(new_unit_price * line.length, precision_digits=2)
+                new_price = float_round(new_unit_price * (1 - (line.discount or 0.0) / 100), 2)
 
             elif line.length > 1.0:
                 extra_length = line.length - 1.0
-                # only round first calculation or double rounding will occur
-                new_unit_price += float_round(extra_length * line.product_id.length_multiplier, 2)
-                new_price = new_unit_price * (1 - (line.discount or 0.0) / 100)
+                new_unit_price += float_round(extra_length * line.product_id.length_multiplier, precision_digits=2)
+                new_price = float_round(new_unit_price * (1 - (line.discount or 0.0) / 100), precision_digits=2)
 
             else:
-                new_price = float_round(new_unit_price * (1 - (line.discount or 0.0) / 100), 2)
+                new_price = float_round(new_unit_price * (1 - (line.discount or 0.0) / 100), precision_digits=2)
 
             taxes = line.tax_id.compute_all(new_price, line.order_id.currency_id, line.product_uom_qty,
                                             product=line.product_id, partner=line.order_id.partner_shipping_id)
