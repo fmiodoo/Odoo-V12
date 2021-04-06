@@ -6,6 +6,7 @@
         Calculates the price of the product variant based on the entered length.""",
 
     'description': """
+        Task ID: 2368045 jsz
         Product Configurator to price based on a set of inputs.
 
         Fiber Mountain sells custom length cables, and depending on different attributes, and the length, Odoo should 
@@ -23,12 +24,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale_management'],
+    'depends': ['sale_management', 'web_studio', 'stock', 'base'],
 
     # always loaded
     'data': [
         'views/product_template_views_inherit.xml',
         'views/sale_order_views_inherit.xml',
+        'report/sale_report_templates.xml',
     ],
 
     'license': 'OEEL-1'
