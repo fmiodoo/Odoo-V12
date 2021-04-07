@@ -38,6 +38,8 @@ class SaleOrderLine(models.Model):
         Compute the amounts of the SO line.  If a line contains a cable product, the price will be computed based on
         the length input in the order line against the 1 UoM base sale price of the product.
         """
+        super(SaleOrderLine, self)._compute_amount()
+
         for line in self.filtered(lambda l: l.product_id.is_cable_product):
             new_price = 0
             new_unit_price = line.product_id.list_price
