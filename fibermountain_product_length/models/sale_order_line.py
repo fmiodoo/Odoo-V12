@@ -27,7 +27,7 @@ class SaleOrderLine(models.Model):
     def _compute_cable_catalog_number(self):
         for line in self:
             if line.product_id.is_cable_product:
-                formatted_length = "%07.2f" % line.length + "M"
+                formatted_length = "%07.1f" % line.length + "M"
                 line.cable_catalog_number = (line.product_id.x_studio_catalog_ or "") + "-" + formatted_length
             else:
                 line.cable_catalog_number = ""
