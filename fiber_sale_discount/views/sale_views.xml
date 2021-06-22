@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fiber_view_res_users_form" model="ir.ui.view">
+        <field name="name">fiber.res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/div[not(@name)][2]/group[1]/field[@name='partner_id']" position="after">
+                <field name="discount_limit"/>
+                <field name="approver_ids" string="Approvers" widget="many2many_tags" domain="[('share','=',False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fiber_view_order_form" model="ir.ui.view">
+        <field name="name">fiber.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm'][1]" position="replace">
+                <button name="action_confirm" id="action_confirm"
+                    string="Confirm" class="btn-primary" type="object"
+                    attrs="{'invisible': [('state', 'not in', ['sent', 'approved'])]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send'][1]" position="replace">
+                <button name="action_quotation_send" string="Send by Email" type="object" states="draft,approved" class="btn-primary"/>
+            </xpath>
+
+            <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                <field name="confirm_so" invisible="1" force_save="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="after">
+                <button name="action_request_discout_email_send"
+                    string="Request Authorization"
+                    type="object"
+                    class="btn-primary"
+                    attrs="{'invisible': [('state', 'not in', ('wait', 'rejected'))]}"/>
+                <button name="action_authorize_discout_approve_email_send"
+                    string="Approve Discount"
+                    type="object"
+                    class="btn-primary"
+                    attrs="{'invisible': [('state', '!=', 'wait')]}"/>
+                <button name="action_authorize_discout_reject_email_send"
+                    string="Reject Discount"
+                    type="object"
+                    class="btn-primary"
+                    attrs="{'invisible': [('state', '!=', 'wait')]}"
+                    />
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="replace">
+                <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'wait', 'approved', 'rejected','sent','sale']), ('id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='preview_sale_order']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'wait', 'rejected', 'cancel'])]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
