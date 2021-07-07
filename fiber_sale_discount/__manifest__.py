@@ -11,7 +11,7 @@
     'website': "http://www.odoo.com",
     'category': 'Customization',
     'version': '0.1',
-    'depends': ['sale'],
+    'depends': ['sale_management'],
     'data': [
         'views/sale_views.xml',
         'data/mail_data.xml',

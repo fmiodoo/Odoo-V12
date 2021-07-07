@@ -21,6 +21,8 @@ class SaleOrder(models.Model):
     def _compute_confirm_so(self):
         for order in self:
             order.confirm_so = False if order.order_line.filtered(lambda o: o.discount > order.user_id.discount_limit) else True
+            if order.confirm_so and order.state in ('wait', 'rejected'):
+                order.state = 'draft'
 
     def action_quotation_send(self):
         if self.state == 'approved' or self.confirm_so == True:
@@ -44,6 +46,7 @@ class SaleOrder(models.Model):
         if self.confirm_so:
             self.action_confirm()
         else:
+            self.write({'state': 'wait'})
             template = self.env.ref('fiber_sale_discount.email_template_sale_discount_approval', raise_if_not_found=False)
             res = self.env['res.users'].search_read([('id', 'in', self.user_id.approver_ids.ids)], ['email'])
             emails = set(r['email'] for r in res if r.get('email'))

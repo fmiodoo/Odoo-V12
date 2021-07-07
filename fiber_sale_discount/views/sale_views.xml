@@ -20,13 +20,18 @@
             <xpath expr="//button[@name='action_confirm'][1]" position="replace">
                 <button name="action_confirm" id="action_confirm"
                     string="Confirm" class="btn-primary" type="object"
-                    attrs="{'invisible': [('state', 'not in', ['sent', 'approved'])]}"/>
+                    attrs="{'invisible': ['|', '|', ('state', 'not in', ['sent', 'approved']), ('confirm_so', '=', False), ('id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][2]" position="replace">
+                <button name="action_confirm"
+                        string="Confirm" type="object"
+                        attrs="{'invisible': ['|', '|', ('state', 'not in', ['draft']), ('confirm_so', '=', False), ('id', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='action_quotation_send'][1]" position="replace">
-                <button name="action_quotation_send" string="Send by Email" type="object" states="draft,approved" class="btn-primary"/>
+                <button name="action_quotation_send" string="Send by Email" type="object" class="btn-primary" attrs="{'invisible': ['|', '|',('confirm_so', '=', False), ('id', '=', False), ('state', '=', 'sale')]}"/>
             </xpath>
 
-            <xpath expr="//field[@name='sale_order_template_id']" position="after">
+            <xpath expr="//field[@name='user_id']" position="after">
                 <field name="confirm_so" invisible="1" force_save="1"/>
             </xpath>
             <xpath expr="//button[@name='action_quotation_send']" position="after">
@@ -34,24 +39,24 @@
                     string="Request Authorization"
                     type="object"
                     class="btn-primary"
-                    attrs="{'invisible': [('state', 'not in', ('wait', 'rejected'))]}"/>
+                    attrs="{'invisible': ['|', ('confirm_so', '=', True), ('state', 'in', ('wait', 'rejected'))]}"/>
                 <button name="action_authorize_discout_approve_email_send"
                     string="Approve Discount"
                     type="object"
                     class="btn-primary"
-                    attrs="{'invisible': [('state', '!=', 'wait')]}"/>
+                    attrs="{'invisible': ['|', ('confirm_so', '=', True), ('state', '!=', 'wait')]}"/>
                 <button name="action_authorize_discout_reject_email_send"
                     string="Reject Discount"
                     type="object"
                     class="btn-primary"
-                    attrs="{'invisible': [('state', '!=', 'wait')]}"
+                    attrs="{'invisible': ['|', ('confirm_so', '=', True), ('state', '!=', 'wait')]}"
                     />
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="replace">
                 <button name="action_cancel" type="object" string="Cancel" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'wait', 'approved', 'rejected','sent','sale']), ('id', '=', False)]}"/>
             </xpath>
             <xpath expr="//button[@name='preview_sale_order']" position="attributes">
-                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'wait', 'rejected', 'cancel'])]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('confirm_so', '=', False), ('id', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>
