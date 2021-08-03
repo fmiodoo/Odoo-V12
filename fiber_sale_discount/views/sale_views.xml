@@ -34,7 +34,6 @@
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="confirm_so" invisible="1" force_save="1"/>
                 <field name="show_authorization" invisible="1" />
-                <field name="login_user" invisible="1" />
             </xpath>
             <xpath expr="//button[@name='action_quotation_send']" position="after">
                 <button name="action_request_discout_email_send"
