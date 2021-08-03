@@ -11,11 +11,26 @@ class Users(models.Model):
     discount_limit = fields.Float('Discount limit')
     approver_ids = fields.Many2many('res.users', 'users_approver_rel', 'user_id1', 'user_id2', string='Approver')
 
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     confirm_so = fields.Boolean('Allow to confirm sale order', default=True, compute='_compute_confirm_so', store=True, readonly=True)
     state = fields.Selection(selection_add=[('wait', 'Waiting for Approval'), ('approved', 'SO is Approved'), ('rejected', 'SO is Rejected')])
+    show_authorization = fields.Boolean(string='Authorized?', default=False, compute='_compute_show_authorization')
+    login_user = fields.Many2one('res.users', string='Logged in user', compute='_compute_login_user')
+
+    def _compute_login_user(self):
+        for order in self:
+            order.login_user = self.env.user
+
+    @api.depends('login_user')
+    def _compute_show_authorization(self):
+        for order in self:
+            if self.login_user in order.user_id.approver_ids:
+                order.show_authorization = True
+            else:
+                order.show_authorization = False
 
     @api.depends('order_line.discount')
     def _compute_confirm_so(self):
