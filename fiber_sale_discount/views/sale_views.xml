@@ -40,7 +40,7 @@
                     string="Request Authorization"
                     type="object"
                     class="btn-primary"
-                    attrs="{'invisible': ['|', ('confirm_so', '=', True), ('state', 'in', ('wait', 'rejected', 'cancel'))]}"/>
+                    attrs="{'invisible': ['|', ('confirm_so', '=', True), ('state', 'in', ('wait', 'cancel'))]}"/>
                 <button name="action_authorize_discout_approve_email_send"
                     string="Approve Discount"
                     type="object"
