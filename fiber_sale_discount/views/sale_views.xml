@@ -62,4 +62,11 @@
         </field>
     </record>
 
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="name">Sales Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="domain">[('state', 'not in', ('wait', 'draft', 'sent', 'cancel'))]</field>
+    </record>
+
 </odoo>
