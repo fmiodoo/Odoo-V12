@@ -16,7 +16,17 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     confirm_so = fields.Boolean('Allow to confirm sale order', default=True, compute='_compute_confirm_so', store=True, readonly=True)
-    state = fields.Selection(selection_add=[('wait', 'Waiting for Approval'), ('approved', 'SO is Approved'), ('rejected', 'SO is Rejected')])
+    state = fields.Selection([
+        ('draft', 'Quotation'),
+        ('wait', 'Waiting for Approval'),
+        ('sent', 'Quotation Sent'),
+        ('sale', 'Sales Order'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+        ('approved', 'SO is Approved'),
+        ('rejected', 'SO is Rejected')
+        ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+
     show_authorization = fields.Boolean(string='Authorized?', compute='_compute_show_authorization')
 
     def _compute_show_authorization(self):
