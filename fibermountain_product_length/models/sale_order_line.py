@@ -20,8 +20,8 @@ class SaleOrderLine(models.Model):
     @api.constrains("length")
     def _check_length(self):
         for line in self:
-            if line.length <= 0.0:
-                raise ValidationError("Field Length must be a positive value.")
+            if line.length < 1.0:
+                raise ValidationError("Field Length must be a value greater than or equal to 1.")
 
     @api.depends("length")
     def _compute_cable_catalog_number(self):
