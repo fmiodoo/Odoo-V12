@@ -90,7 +90,7 @@ class SaleOrder(models.Model):
                     self.id,
                     force_send=True,
                     raise_exception=False,
-                    email_values={'email_to': self.env.user.email, 'recipient_ids': []},
+                    email_values={'recipient_ids': []},
                     notif_layout="mail.mail_notification_paynow")
                 self.write({'confirm_so': True, 'state': 'approved'})
                 return {'toast_message': _("A sample email has been sent to %s.") % self.env.user.email}
@@ -106,7 +106,7 @@ class SaleOrder(models.Model):
                     self.id,
                     force_send=True,
                     raise_exception=False,
-                    email_values={'email_to': self.env.user.email, 'recipient_ids': []},
+                    email_values={'recipient_ids': []},
                     notif_layout="mail.mail_notification_paynow")
                 self.write({'state': 'rejected'})
                 return {'toast_message': _("A sample email has been sent to %s.") % self.env.user.email}
