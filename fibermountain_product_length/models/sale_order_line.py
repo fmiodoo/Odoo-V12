@@ -22,6 +22,9 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line.length < 1.0:
                 raise ValidationError("Field Length must be a value greater than or equal to 1.")
+            else:
+                if line.length % 1 != 0.5 or line.length % 1 != 0.0:
+                    raise ValidationError("Field length may only contain increments of 0.5.")
 
     @api.depends("length")
     def _compute_cable_catalog_number(self):
