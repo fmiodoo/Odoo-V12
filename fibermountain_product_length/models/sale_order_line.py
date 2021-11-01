@@ -20,15 +20,22 @@ class SaleOrderLine(models.Model):
     @api.constrains("length")
     def _check_length(self):
         for line in self:
-            if line.length <= 0.0:
-                raise ValidationError("Field Length must be a positive value.")
+            if line.length < 1.0:
+                raise ValidationError("Field Length must be a value greater than or equal to 1.")
+            else:
+                length_remainder = line.length % 1
+                if length_remainder not in [0.0, 0.5]:
+                    raise ValidationError("Field length may only contain increments of 0.5.")
 
     @api.depends("length")
     def _compute_cable_catalog_number(self):
         for line in self:
             if line.product_id.is_cable_product:
                 formatted_length = "%07.1f" % line.length + "M"
-                line.cable_catalog_number = (line.product_id.x_studio_catalog_ or "") + "-" + formatted_length
+                if "x_studio_catalog_" in self.env['sale.order.line'].fields_get().keys():
+                    line.cable_catalog_number = line.product_id.x_studio_catalog_ + "-" + formatted_length
+                else:
+                    line.cable_catalog_number = "-" + formatted_length
             else:
                 line.cable_catalog_number = ""
 
