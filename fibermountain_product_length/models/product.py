@@ -11,6 +11,7 @@ class ProductTemplate(models.Model):
                                    default=1.0,
                                    help="Price per each unit above the single unit assembled price.")
     is_cable_product = fields.Boolean(string="Is a Cable Product")
+    catalog = fields.Char(string="Catalog #", )
 
     @api.constrains("length_multiplier")
     def _check_length_multiplier(self):

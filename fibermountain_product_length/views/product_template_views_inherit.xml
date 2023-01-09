@@ -8,11 +8,9 @@
         <field name="arch" type="xml">
             <label for="list_price" position="before">
                 <field name="length_multiplier"/>
-            </label>
-
-            <field name="length_multiplier"  position="before">
                 <field name="is_cable_product"/>
-            </field>
+                <field name="catalog"/>
+            </label>
         </field>
     </record>
 </odoo>

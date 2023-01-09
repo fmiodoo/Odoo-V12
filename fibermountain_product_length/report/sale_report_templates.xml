@@ -25,7 +25,7 @@
                 <td name="td_cable_catalog_number"><span t-field="line.cable_catalog_number"/></td>
             </t>
             <t t-else="">
-                <td name="td_catalog_number"><span t-field="line.product_id.x_studio_catalog_"/></td>
+                <td name="td_catalog_number"><span t-field="line.catalog"/></td>
             </t>
         </xpath>
     </template>
