@@ -16,6 +16,7 @@ class SaleOrderLine(models.Model):
                                        compute="_compute_cable_catalog_number")
 
     name = fields.Text(string='Description', required=True, default="")
+    catalog = fields.Char(string="Catalog #", related="product_id.catalog")
 
     @api.constrains("length")
     def _check_length(self):
@@ -26,9 +27,9 @@ class SaleOrderLine(models.Model):
     @api.depends("length")
     def _compute_cable_catalog_number(self):
         for line in self:
-            if line.product_id.is_cable_product:
+            if line.product_id.is_cable_product and line.catalog and line.length:
                 formatted_length = "%07.1f" % line.length + "M"
-                line.cable_catalog_number = (line.product_id.x_studio_catalog_ or "") + "-" + formatted_length
+                line.cable_catalog_number = (line.catalog or "") + "-" + formatted_length
             else:
                 line.cable_catalog_number = ""
 
@@ -50,6 +51,7 @@ class SaleOrderLine(models.Model):
 
             elif line.length > 1.0:
                 extra_length = line.length - 1.0
+                print(extra_length,line.product_id.length_multiplier,'\n\n\n')
                 new_unit_price += float_round(extra_length * line.product_id.length_multiplier, precision_digits=2)
                 new_price = float_round(new_unit_price * (1 - (line.discount or 0.0) / 100), precision_digits=2)
 

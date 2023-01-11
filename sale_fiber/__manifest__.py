@@ -5,18 +5,20 @@
     'summary': "Round decimal for discount",
 
     'description': """
-    task id: 2237153
-    Round decimals in "Discounted Unit Price"
+task id: 2237153
+Round decimals in "Discounted Unit Price"
     """,
-    'author': 'Odoo',
+    'author': 'Odoo Inc',
     'website': 'https://www.odoo.com/',
 
     'category': 'Custom Development',
     'version': '1.0',
-    'license': 'OEEL-1',
+    'license': 'OPL-1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale'],
+    'depends': [
+        'sale'
+    ],
 
     # always loaded
     'data': [
