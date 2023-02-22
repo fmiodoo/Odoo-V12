@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="product_attribute_value_tree_inherit_product_config_custom" model="ir.ui.view">
         <field name="name">product.attributee.view.form.inherit.product_config_custom	</field>
